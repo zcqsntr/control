@@ -13,12 +13,12 @@ from hybrid_PS_SGD_v2 import *
 
 class MPC():
 
-    def __init__(self, domain, n_particles, n_groups, cs, velocity_scaling, ode_params):
-        self.swarm = Swarm(domain, n_particles, n_groups, cs, velocity_scaling, ode_params)
+    def __init__(self, domain, n_particles, n_groups, cs, ode_params):
+        self.swarm = Swarm(domain, n_particles, n_groups, cs, ode_params)
         self.time_series = []
 
-    def reset_swarm(self,domain, n_particles, n_groups, cs, velocity_scaling, ode_params):
-        self.swarm = Swarm(domain, n_particles, n_groups, cs, velocity_scaling, ode_params)
+    def reset_swarm(self,domain, n_particles, n_groups, cs, ode_params):
+        self.swarm = Swarm(domain, n_particles, n_groups, cs,  ode_params)
 
     def run(self, initial_S, params, target, n_timesteps, n_steps):
         S = initial_S
@@ -50,13 +50,13 @@ initial_S = np.append(initial_X, initial_C0)
 
 Cin_domain = np.array([[0, 1.5]])
 
-target = np.array([30000]*10) # target for MPC to aim for, steady state of 300000
+target = np.array([30000]*2) # target for MPC to aim for, steady state of 300000
 
 
 parameters = np.array([480000, 0.6])
 n_particles = 10
 n_groups = 1
-optimiser_args = [Cin_domain, n_particles, n_groups, [2,2], np.array([1]), ode_params]
+optimiser_args = [Cin_domain, n_particles, n_groups, [2,2], ode_params]
 
 
 MPC = MPC(*optimiser_args)
@@ -65,7 +65,7 @@ n_steps = 20
 MPC.run(initial_S, parameters, target, n_timesteps, n_steps)
 
 
-target = np.array([35000]*10)
+target = np.array([35000]*2)
 MPC.reset_swarm(*optimiser_args)
 MPC.run(MPC.time_series[-1], parameters, target, n_timesteps, n_steps)
 TS = np.array(MPC.time_series)[:,0]
