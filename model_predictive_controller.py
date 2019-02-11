@@ -23,14 +23,13 @@ class MPC():
     def run(self, initial_S, params, target, n_timesteps, n_steps):
         S = initial_S
         for i in range(n_timesteps):
+            print(i)
 
-            print('i: ', i)
-            print(S)
+
             losses, particle_positions, _ = self.swarm.find_minimum(S, params, target, n_steps, 'MPC')
 
             argmin = np.argmin(losses)
             best_Cin = particle_positions[argmin]
-            print('position: ', best_Cin)
-            print('loss: ', min(losses))
+
             S = self.swarm.predict(params, S, best_Cin, [0,1])[0]
             self.time_series.append(S)

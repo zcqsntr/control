@@ -4,12 +4,14 @@ import yaml
 
 from model_predictive_controller import *
 
-sys.path.append('/Users/Neythen/Desktop/masters_project/app/CBcurl_master/CBcurl')
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+sys.path.append(os.path.join(ROOT_DIR, 'app', 'CBcurl_master', 'CBcurl'))
 
 from utilities import *
 
 # open parameter file
-f = open('/Users/Neythen/Desktop/masters_project/app/CBcurl_master/examples/parameter_files/smaller_target.yaml')
+f = open('/home/neythen/Desktop/masters_project/app/CBcurl_master/examples/parameter_files/smaller_target.yaml')
 param_dict = yaml.load(f)
 f.close()
 
@@ -23,12 +25,12 @@ initial_C0 = param_dict['Q_params'][9]
 initial_S = np.append(initial_X, initial_Cs)
 initial_S = np.append(initial_S, initial_C0)
 
-print(initial_S)
+
 Cins_domain = np.array([[0, 0.1], [0, 0.1]])
 
 target = np.array([[250., 550.]]*10)
 
-print(target.shape)
+
 
 n_particles = 10
 n_groups = 3
@@ -39,8 +41,8 @@ MPC = MPC(*optimiser_args)
 
 n_timesteps = 50
 n_opt_steps = 40
-params = ode_params[2:]
-print(ode_params)
+
+params = ode_params
 
 MPC.run(initial_S, params, target, n_timesteps, n_opt_steps)
 TS = np.array(MPC.time_series)[:,:2]
