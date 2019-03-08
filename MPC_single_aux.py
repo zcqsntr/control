@@ -13,7 +13,7 @@ from utilities import *
 
 # open parameter file
 #f = open('/home/neythen/Desktop/Projects/masters_project/app/CBcurl_master/examples/parameter_files/smaller_target.yaml')
-f = open('/home/neythen/Desktop/Projects/masters_project/app/CBcurl_master/examples/parameter_files/MPC.yaml')
+f = open('old_single_auxotroph.yaml')
 param_dict = yaml.load(f)
 f.close()
 
@@ -28,9 +28,10 @@ initial_S = np.append(initial_X, initial_Cs)
 initial_S = np.append(initial_S, initial_C0)
 
 
-Cins_domain = np.array([[0, 0.1], [0, 0.1]])
+Cins_domain = np.array(param_dict['Q_params'][5]).reshape(1,2)
 
-target = np.array([[20000.,10000.]]*10)
+print(Cins_domain.shape)
+target = np.array([[30000.,70000.]]*10)
 
 
 
@@ -41,8 +42,8 @@ optimiser_args = [Cins_domain, n_particles, n_groups, [2,2], ode_params]
 
 MPC = MPC(*optimiser_args)
 
-n_timesteps = 1000
-n_opt_steps = 40
+n_timesteps = 30
+n_opt_steps = 20
 
 params = ode_params
 print(initial_S)
