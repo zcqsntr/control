@@ -41,8 +41,8 @@ optimiser_args = [Cins_domain, n_particles, n_groups, [2,2], ode_params]
 
 MPC = MPC(*optimiser_args)
 
-n_timesteps = 1000
-n_opt_steps = 40
+n_timesteps = 500
+n_opt_steps = 20
 
 params = ode_params
 print(initial_S)
